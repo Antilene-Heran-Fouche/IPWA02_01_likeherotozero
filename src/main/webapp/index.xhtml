@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<title>Startseite</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</h:head>
+<body>
+
+	<div class="header">
+		<ui:include src="/header.xhtml" />
+	</div>
+
+	<div class="content">
+
+		<div class="einleitung"
+			style="align: center; flex-basis: 100%; padding-bottom: 3rem;">
+			<h2>Willkommen bei Like Hero To Zero!</h2>
+
+			<p>
+				Der CO2 ausstoß der Menschen wid zum Problem. Durch die stetig
+				steigende verschmutzung wird unser Planet in Mitleidenschaft
+				gezogen. <br /> Like Hero to Zero ist ein Nachhaltigkeitsprojekt
+				das darauf abziehlt Tranzparenz im CO2 ausstoß aller Länder zu
+				bringen.
+			</p>
+
+			<br/>
+	
+			<h2>Datenauswahl</h2>
+			<p>
+			Hier kannst du dir Daten des jeweiligen Landes aus dem du kommst anzeigen lassen. <br/>
+			Wähle einfach ein Land aus und die Daten aktualisieren sich.
+			</p>
+			
+			<p>
+			*Der CO₂-Ausstoß ist in Millionen Tonnen angegeben.
+			</p>
+		</div>
+
+
+
+
+
+
+
+<div class="laenderauswahl">
+			<div>
+				<h:form>
+					<p:growl id="msgs" showDetail="true"
+						skipDetailIfEqualsSummary="true" />
+
+					<p:panel style="margin-bottom:10px;">
+
+						<p:outputLabel for="country" />
+						<p:selectOneMenu id="country" value="#{laenderController.ausgewaehlt}"
+							style="width:250px">
+							<f:selectItem itemLabel="Wähle ein Land" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems value="#{laenderController.laenderList}" var="laender"
+								itemLabel="#{laender.countryname}" itemValue="#{laender.idcountrys}" />
+							<p:ajax event="change" />
+						</p:selectOneMenu>
+
+						<p:divider />
+
+						<p:commandButton value="Auswählen" styleClass="ui-button-raised ui-button-flat ui-button-plain customButton"
+							action="#{laenderController.countryAusgabe}" update=":outputdata2 :outputdata3" />
+
+
+
+					</p:panel>
+
+				</h:form>
+			</div>
+		</div>
+
+		<div class="laenderausgabe">
+			<div>
+				<div class="card">
+					<p:dataTable var="laender" value="#{laenderController.la.emi}"
+						stateful="false" filterMatchMode="contains" rows="10"
+						paginator="true" paginatorPosition="bottom" id="outputdata3">
+						<p:column headerText="Jahr"
+							sortBy="#{laender.year}"
+             				sortOrder="ascending">
+							<h:outputText value="#{laender.year}" />
+						</p:column>
+						
+						<p:column headerText="Bevölkerrung" sortBy="#{laender.population}"
+						>
+							<h:outputText value="#{laender.population}">
+								<f:convertNumber locale="fr_FR" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="GDP" sortBy="#{laender.gdp}">
+							<h:outputText value="#{laender.gdp}">
+								<f:convertNumber locale="fr_FR" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="CO2-Ausstoß" sortBy="#{laender.co2}">
+							<h:outputText value="#{laender.co2}">
+								<f:convertNumber locale="fr_FR" />
+							</h:outputText>
+						</p:column>
+						
+						
+
+					</p:dataTable>
+				</div>
+				
+			</div>
+		</div>
+
+
+
+	<div>
+
+</div>
+
+	</div>
+</body>
+</html>

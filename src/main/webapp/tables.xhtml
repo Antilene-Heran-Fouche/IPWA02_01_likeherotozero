@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<title>Übersicht</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</h:head>
+
+<body>
+
+<f:event type="preRenderView" listener="#{sessionController.checkEditer}" />
+
+	<div class="header">
+		<ui:include src="/header.xhtml" />
+	</div>
+
+	<div class="content">
+	
+	<div class="laenderauswahl">
+			<div>
+				<h:form>
+					<p:growl id="msgs" showDetail="true"
+						skipDetailIfEqualsSummary="true" />
+
+					<p:panel style="margin-bottom:10px;">
+
+						<p:outputLabel for="country" />
+						<p:selectOneMenu id="country" value="#{laenderWriteController.ausgewaehlt}"
+							style="width:150px">
+							<f:selectItem itemLabel="Select Country" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems value="#{laenderWriteController.laenderList}" var="laender"
+								itemLabel="#{laender.countryname}" itemValue="#{laender.idcountrys}" />
+							<p:ajax event="change" />
+						</p:selectOneMenu>
+
+						<p:divider />
+
+						<p:commandButton value="Auswählen"
+							action="#{laenderWriteController.countryAusgabe}" update=":editEmissionsTable" styleClass="ui-button-raised ui-button-flat ui-button-plain customButton"/>
+
+
+
+					</p:panel>
+
+				</h:form>
+			</div>
+		</div>
+	
+		<div class="laenderausgabe">
+			<div>
+			<!-- Nur wenn eingeloggt Editierbar -->
+			<h:form id="editEmissionsTable"
+				rendered="#{sessionController.editor}">
+
+				<p:growl id="msgs" showDetail="true" />
+
+				<div class="card">
+					<p:dataTable var="emissions"
+						value="#{laenderWriteController.la.emi}" filterMatchMode="contains"
+						editable="true" editMode="row" id="emissionsTable" rows="5"
+						paginator="true" paginatorPosition="bottom">
+
+						<p:ajax event="rowEdit" listener="#{laenderWriteController.editEmissions}"
+							update=":editEmissionsTable:msgs" />
+
+						<p:column headerText="Jahr" filterBy="#{emissions.year}"
+							filterMatchMode="contains"
+							sortBy="#{emissions.year}"
+             				sortOrder="ascending">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{emissions.year}" />
+								</f:facet>
+
+								<f:facet name="input">
+									<p:inputText id="modelInput" value="#{emissions.year}"
+										autocomplete="off" maxlength="45" />
+								</f:facet>
+
+							</p:cellEditor>
+						</p:column>
+						
+						<p:column headerText="Bevölkerrung">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{emissions.population}">
+										<f:convertNumber locale="fr_FR" />
+									</h:outputText>
+								</f:facet>
+
+								<f:facet name="input">
+									<p:inputNumber value="#{emissions.population}"
+										autocomplete="off" decimalSeparator="," thousandSeparator="."
+										maxValue="2147483647" />
+
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="GDP">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{emissions.gdp}">
+										<f:convertNumber locale="fr_FR" />
+									</h:outputText>
+								</f:facet>
+
+								<f:facet name="input">
+									<p:inputNumber value="#{emissions.gdp}"
+										autocomplete="off" decimalSeparator="," thousandSeparator="."
+										maxValue="2147483647" />
+
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						
+						
+						<p:column headerText="CO2-Ausstoß (kt)">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{emissions.co2}">
+										<f:convertNumber locale="fr_FR" />
+									</h:outputText>
+								</f:facet>
+
+								<f:facet name="input">
+									<p:inputNumber value="#{emissions.co2}"
+										autocomplete="off" decimalSeparator="," thousandSeparator="."
+										maxValue="2147483647" />
+
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						
+
+
+						<p:column style="width:6rem">
+							<p:rowEditor editTitle="Edit Row" cancelTitle="Cancel Edit"
+								saveTitle="Save Row" />
+						</p:column>
+
+						<p:column style="width:6rem">
+							<p:commandButton
+								action="#{laenderWriteController.removeEmissions(emissions)}"
+								value="löschen" update="@form"
+								styleClass="rounded-button ui-button-danger" />
+						</p:column>
+
+					</p:dataTable>
+				</div>
+
+
+			</h:form>
+		</div>
+		</div>
+
+		<!-- neue Emissions hinzufügen -->
+
+		<div class="emissionsinput">
+		<h:form id="addEmissionsForm" rendered="#{sessionController.editor}">
+			<h2>Füge jetzt einen neuen Datensatz hinzu:</h2>
+						<p>
+			*Der CO₂-Ausstoß ist in Millionen Tonnen angegeben.
+			</p>
+			<div class="emissionsInput">
+				
+				<span class="ui-float-label"> 
+					<p:inputNumber value="#{laenderWriteController.year}" required="true" autocomplete="off" maxValue="2147483647"/> 
+					<p:outputLabel for="@previous" value="Jahr" />
+				</span>
+				
+				<span class="ui-float-label"> 
+					<p:inputNumber value="#{laenderWriteController.population}" required="true" autocomplete="off" maxValue="2147483647"/> 
+					<p:outputLabel for="@previous" value="Bevölkerung" />
+				</span>
+				
+				<span class="ui-float-label"> 
+					<p:inputNumber value="#{laenderWriteController.gdp}" required="true" autocomplete="off" maxValue="2147483647"/> 
+					<p:outputLabel for="@previous" value="GDP" />
+				</span>
+				
+				<span class="ui-float-label"> 
+					<p:inputNumber value="#{laenderWriteController.co2}" required="true" autocomplete="off" maxValue="2147483647"/> 
+					<p:outputLabel for="@previous" value="CO2" />
+				</span>
+				
+				<span class="ui-float-label"> 
+					<p:inputNumber value="#{laenderWriteController.co2_including_luc}" required="true" autocomplete="off" maxValue="2147483647"/> 
+					<p:outputLabel for="@previous" value="co2_including_luc" />
+				</span>
+				
+				<span class="ui-float-label"> 
+					<p:inputNumber value="#{laenderWriteController.co2_per_capita}" required="true" autocomplete="off" maxValue="2147483647"/> 
+					<p:outputLabel for="@previous" value="co2_per_capita" />
+				</span>
+				
+
+				<p:commandButton value="Speichern" styleClass="ui-button-raised ui-button-flat ui-button-plain customButton"
+					action="#{laenderWriteController.addEmissions}"
+					update="addEmissionsForm, :editEmissionsTable" />
+
+			</div>
+		</h:form>
+		</div>
+	</div>
+
+</body>
+</html>

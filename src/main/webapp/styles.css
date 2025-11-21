@@ -1,0 +1,128 @@
+
+body {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0;
+ 	padding: 0;
+	width: 100%;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+h1 {
+    font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 4.5em;
+    font-weight: 700;
+}
+
+.mainheader{
+	
+	display: flex;
+  	justify-content: space-evenly;
+  	align-items: center;
+  	gap: 1rem;
+  	width: 100%;
+  	border-bottom: 2px solid grey;	 
+}
+
+.customButton{
+	border-color:#074b00 !important;
+}
+
+.customButton:hover{
+	border-color:#0e9700 !important;
+}
+
+
+.desktopButtons{
+	display: none;
+	padding-top: 1rem;
+}
+
+.mobileButtons{
+		padding-top: 1rem;
+}
+
+
+.emissionsInput{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.header{
+	flex: 1 1 100%;
+	justify-content: space-evenly;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+
+
+.content{
+	padding-top: 1rem;
+	display: flex;
+	flex-wrap: wrap;
+	flex: 1 1 100%;
+	justify-content: space-evenly;
+	padding-left: 1rem;
+	padding-right: 1rem;
+
+}
+
+
+.laenderauswahl{
+  display: flex;
+  flex: 1 1 100%;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.laenderausgabe{
+	display:flex;
+	flex: 100%;
+ 	justify-content: center;
+
+}
+
+
+@media screen and (min-width:960px) {
+	
+.header{
+	flex: 1 1 100%;
+	padding-left: 10%;
+	padding-right: 10%;
+}
+	
+.content{
+	display: flex;
+	padding-left: 10%;
+	padding-right: 10%;
+	flex-direction: row;
+	}
+	
+.desktopButtons{
+	display: flex;
+	padding-top: 1rem;
+}
+
+.mobileButtons{
+	display: none;
+}
+
+.laenderauswahl{
+	flex: 25%;
+	align-items: flex-start;
+	justify-content: flex-start;
+}
+
+.laenderausgabe{
+  flex: 75%;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+	
+	
+}
